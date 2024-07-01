@@ -1,6 +1,6 @@
 module bin_to_gray
 #(
-	parameter	NBIT	= 8
+	parameter	NBIT	= 8								//input data size
 )(
 	output reg	[NBIT-1 : 0]	o_gray,
 	input		[NBIT-1 : 0]	i_bin,
@@ -10,7 +10,7 @@ module bin_to_gray
 
 	always @(*) begin
 		if(!i_rstn) begin
-			o_gray <= 0;
+			o_gray <= 0;								//RESET
 		end else begin
 			o_gray <= (i_bin >> 1) ^ i_bin;
 		end
