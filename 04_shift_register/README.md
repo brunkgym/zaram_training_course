@@ -245,4 +245,7 @@ endmodule
 ```   
 
 ##	Simulation Result   
+-serial_to_parallel
 ![Waveform](./vcd/wave.png)
+-parallel_to_serial   
+![Waveform](./vcd/wave2.png)
