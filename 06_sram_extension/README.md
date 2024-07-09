@@ -1,6 +1,6 @@
 # Sram Extension
 ## Operation Principle
-- 4-bit Addr. % 32-bit I/O Data 
+- 4-bit Addr. & 32-bit I/O Data 
 => 6-bit Addr. & 64-bit I/O Data
 
 ## Verilog Code
