@@ -83,10 +83,10 @@ task vecInsert;
 
 task init;
 	begin
-		i_a	= 0;
-		i_b	= 0;
-		i_c = 0;
-        i_clk 		= 0;
+		i_a		= 0;
+		i_b		= 0;
+		i_c 	= 0;
+        i_clk	= 0;
 
 		repeat(10) 	
 		@(posedge i_clk);
