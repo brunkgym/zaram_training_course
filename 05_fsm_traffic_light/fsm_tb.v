@@ -1,9 +1,9 @@
 //-------------------------------
 //Define & Include
 //-------------------------------
-`define	SIMCYCLE	8
+`define	SIMCYCLE	15
 `define	CLKFREQ		100
-`include "fsm_traffic_light.v"
+`include "fsm_traffic_light_2.v"
 
 module fsm_tb;
 
@@ -92,11 +92,15 @@ integer i;
 				i_r		=	$urandom;
 				#(10000/`CLKFREQ);
 			end			
+				i_p		=	0;
+				i_r		=	0;
 			for(i=0;i<`SIMCYCLE;i++) begin
 				i_t_a	=	$urandom;
 				i_t_b	=	$urandom;
 				#(10000/`CLKFREQ);
 			end			
+				i_t_a	=	0;
+				i_t_b	=	0;
 			for(i=0;i<`SIMCYCLE;i++) begin
 				i_p		=	$urandom;
 				i_r		=	$urandom;
@@ -104,6 +108,8 @@ integer i;
 				i_t_b	=	$urandom;
 				#(10000/`CLKFREQ);
 			end			
+			repeat(10)
+			@(posedge i_clk);
 			$finish;
 		end
 

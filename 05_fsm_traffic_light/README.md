@@ -5,11 +5,10 @@
 ## Verilog Code
 ### DUT
 ```verilog 
-
 module fsm_traffic_light
 (
-	output	reg	[8*8-1 : 0]		o_l_a,
-	output	reg	[8*8-1 : 0]		o_l_b,
+	output		[8*8-1 : 0]		o_l_a,
+	output		[8*8-1 : 0]		o_l_b,
 	input						i_p,
 	input						i_r,
 	input						i_t_a,
@@ -18,88 +17,52 @@ module fsm_traffic_light
 	input						i_rstn
 );
 
-wire mode;
+wire		mode;
+reg	[1:0]	state;
+wire		state_0;
+wire		state_1;
+wire		state_2;
+wire		state_3;
 
-reg		[3:0]	cnt;
-reg		[2:0]	cState;
-reg		[2:0]	nState;
+assign	mode	=	(i_r)	? 0 :
+					(i_p)	? 1 : 0;
+assign	state_0	=	(state == 0) ? 1 : 0;
+assign	state_1	=	(state == 1) ? 1 : 0;
+assign	state_2	=	(state == 2) ? 1 : 0;
+assign	state_3	=	(state == 3) ? 1 : 0;
 
-localparam	S_0		=	3'b001;
-localparam	S_1		=	3'b010;
-localparam	S_2		=	3'b011;
-localparam	S_3		=	3'b111;
+assign	o_l_a	=	(state_0)	?	"GREEN"		:
+					(state_1)	?	"YELLOW"	:
+					(state_2)	?	"RED"		:
+					(state_3)	?	"YELLOW"	:	"GREEN";
 
-assign	mode = (i_r) ? 0 :
-			   (i_p) ? 1 : 0;
+assign	o_l_b	=	(state_0)	?	"RED"		:
+					(state_1)	?	"YELLOW"	:
+					(state_2)	?	"GREEN"		:
+					(state_3)	?	"YELLOW"	:	"RED";
 
 always @(posedge i_clk or negedge i_rstn) begin
 	if(!i_rstn) begin
-		cState	<= S_0;
-		nState	<= S_0;
-		cnt		<= 0;
+		state	= 0;
 	end else begin
-		if(mode || i_t_b) begin
-			cState	= S_2;
+		if (mode) begin
+			state	<= 2;
 		end else begin
-			if(i_t_a) begin
-				cState	= S_0;
+			if(state_0 & i_t_a) begin
+				state	<=	0;
 			end else begin
-				cState	<= nState;
+				if(state_2 & i_t_b) begin
+					state	<=	2;
+				end else begin
+					state	<=	state + 1;
+				end
 			end
 		end
 	end
 end
 
-always @(*) begin
-	case (cState)
-		S_0		: begin
-				o_l_a	= "GREEN";
-				o_l_b	= "RED";
-				if(cnt == 9) begin
-					nState = S_1;
-				end else begin
-					nState = S_0;
-				end
-		end
-		S_1		: begin
-				o_l_a	= "YELLOW";
-				o_l_b	= "YELLOW";
-				if(cnt == 2) begin
-					nState = S_2;
-				end else begin
-					nState = S_1;
-				end
-		end
-		S_2		: begin
-				o_l_a	= "RED";
-				o_l_b	= "GREEN";
-				if(cnt == 9) begin
-					nState = S_3;
-				end else begin
-					nState = S_2;
-				end
-		end
-		S_3		: begin
-				o_l_a	= "YELLOW";
-				o_l_b	= "YELLOW";
-				if(cnt == 2) begin
-					nState = S_0;
-				end else begin
-					nState = S_3;
-				end
-		end
-	endcase
-end
-
-always @(i_clk) begin
-	if( cnt == 10)
-		cnt = 0;
-	else
-	cnt = cnt + 1;
-end	
-
-
 endmodule
+
 ```
 
 ### Testbench
@@ -107,9 +70,9 @@ endmodule
 //-------------------------------
 //Define & Include
 //-------------------------------
-`define	SIMCYCLE	8
+`define	SIMCYCLE	15
 `define	CLKFREQ		100
-`include "fsm_traffic_light.v"
+`include "fsm_traffic_light_2.v"
 
 module fsm_tb;
 
@@ -198,11 +161,15 @@ integer i;
 				i_r		=	$urandom;
 				#(10000/`CLKFREQ);
 			end			
+				i_p		=	0;
+				i_r		=	0;
 			for(i=0;i<`SIMCYCLE;i++) begin
 				i_t_a	=	$urandom;
 				i_t_b	=	$urandom;
 				#(10000/`CLKFREQ);
 			end			
+				i_t_a	=	0;
+				i_t_b	=	0;
 			for(i=0;i<`SIMCYCLE;i++) begin
 				i_p		=	$urandom;
 				i_r		=	$urandom;
@@ -210,6 +177,8 @@ integer i;
 				i_t_b	=	$urandom;
 				#(10000/`CLKFREQ);
 			end			
+			repeat(10)
+			@(posedge i_clk);
 			$finish;
 		end
 
@@ -227,17 +196,14 @@ reg [8*32-1:0]	vcd_file;
 		end
 	end
 endmodule
+
 ```
 
 ##	Simulation Result
--normal Traffic
-![Waveform0](./noinput.png);
--parade
-![Waveform0](./parade.png);
+-normal Traffic & parade mode
+![Waveform0](./parade_test.png);
 -stop_parade
-![Waveform0](./stop_parade.png);
--Ta_high
-![Waveform0](./Ta_high.png);
--Tb_high
-![Waveform0](./Tb_high.png);
+![Waveform0](./quit_parade_test.png);
+-Ta_Tb_test
+![Waveform0](./Ta_Tb_test.png);
 
