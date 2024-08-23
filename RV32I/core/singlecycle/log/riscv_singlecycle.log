@@ -1,0 +1,3 @@
+ERROR: ./../common/riscv_imem.v:13: $readmemh: Unable to open riscv_imem.mif for reading.
+ERROR: ./../common/riscv_dmem.v:15: $readmemh: Unable to open riscv_dmem.mif for reading.
+VCD info: dumpfile ./vcd/riscv_singlecycle.vcd opened for output.
