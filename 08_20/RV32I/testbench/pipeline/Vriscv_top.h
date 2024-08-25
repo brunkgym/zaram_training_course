@@ -38,7 +38,7 @@ VL_MODULE(Vriscv_top) {
     // Internals; generally not touched by application code
     CData/*1:0*/ riscv_top__DOT__o_pc_src_e;
     CData/*1:0*/ riscv_top__DOT__o_result_src_d;
-    CData/*0:0*/ riscv_top__DOT__o_alu_src_d;
+    CData/*0:0*/ riscv_top__DOT__o_alu_src_b_d;
     CData/*3:0*/ riscv_top__DOT__o_alu_control_d;
     CData/*1:0*/ riscv_top__DOT__o_result_src_e;
     CData/*0:0*/ riscv_top__DOT__o_alu_src_a_e;
@@ -52,11 +52,11 @@ VL_MODULE(Vriscv_top) {
     CData/*4:0*/ riscv_top__DOT__o_rs1_e;
     CData/*4:0*/ riscv_top__DOT__o_rs2_e;
     CData/*0:0*/ riscv_top__DOT__o_zero_condition_e;
+    CData/*0:0*/ riscv_top__DOT__o_unsigned_e;
     CData/*0:0*/ riscv_top__DOT__o_flush_e;
     CData/*0:0*/ riscv_top__DOT__o_jalr_e;
     CData/*1:0*/ riscv_top__DOT__o_forward_a_e;
     CData/*1:0*/ riscv_top__DOT__o_forward_b_e;
-    CData/*0:0*/ riscv_top__DOT__o_alu_src_b_d;
     CData/*2:0*/ riscv_top__DOT__u_riscv_decode__DOT__o_immsrc_d;
     CData/*0:0*/ riscv_top__DOT__u_riscv_hazard_unit__DOT__lwstall;
     IData/*31:0*/ riscv_top__DOT__o_instr_d;
@@ -82,7 +82,7 @@ VL_MODULE(Vriscv_top) {
     IData/*31:0*/ riscv_top__DOT__u_riscv_execute__DOT__o_src_a_e;
     IData/*31:0*/ riscv_top__DOT__u_riscv_execute__DOT__o_src_b_e;
     WData/*1023:0*/ riscv_top__DOT__u_riscv_memory__DOT__u_riscv_dmem__DOT__FILE_DATA_MIF[32];
-    IData/*31:0*/ riscv_top__DOT__u_riscv_memory__DOT__u_riscv_dmem__DOT__o_dmem_data_;
+    IData/*31:0*/ riscv_top__DOT__u_riscv_memory__DOT__u_riscv_dmem__DOT__dmem_data_;
     IData/*31:0*/ riscv_top__DOT__u_riscv_memory__DOT__u_riscv_dmem__DOT__i;
     QData/*63:0*/ riscv_top__DOT__u_riscv_execute__DOT__u_riscv_alu__DOT__DEBUG_ALU_OP;
     IData/*31:0*/ riscv_top__DOT__u_riscv_fetch__DOT__u_riscv_imem__DOT__imem_arr[16384];
@@ -105,6 +105,7 @@ VL_MODULE(Vriscv_top) {
     CData/*0:0*/ __Vclklast__TOP__i_rstn;
     SData/*10:0*/ __Vtableidx4;
     IData/*31:0*/ riscv_top__DOT____Vcellout__u_riscv_register_decode__o_register_q_13;
+    IData/*31:0*/ riscv_top__DOT____Vcellout__u_riscv_register_execute__o_register_q_9;
     IData/*31:0*/ riscv_top__DOT____Vcellout__u_riscv_register_execute__o_register_q_6;
     IData/*31:0*/ riscv_top__DOT____Vcellout__u_riscv_register_execute__o_register_q_3;
     IData/*31:0*/ riscv_top__DOT____Vcellout__u_riscv_register_execute__o_register_q_2;
