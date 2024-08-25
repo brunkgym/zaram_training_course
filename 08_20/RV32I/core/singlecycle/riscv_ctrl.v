@@ -24,6 +24,7 @@ module riscv_ctrl
 	output reg					o_jump_d,
 	output reg					o_branch_d,
 	output reg					o_zero_condition,
+	output reg					o_unsigned_d,
 	
 	//input						i_ctrl_alu_zero,
 	input		[6:0]			i_ctrl_opcode,
@@ -139,6 +140,23 @@ module riscv_ctrl
 		case (i_ctrl_opcode)
 			`OPCODE_S_STORE		: o_ctrl_mem_wr_en	= 1'b1;
 			default				: o_ctrl_mem_wr_en	= 1'b0;
+		endcase
+	end
+
+	always @(*) begin
+		case (i_ctrl_opcode)
+			`OPCODE_I_LOAD		,
+			`OPCODE_S_STORE		: begin
+				case (i_ctrl_funct3)
+					`FUNCT3_MEM_BYTE	: o_unsigned_d		= 0;
+					`FUNCT3_MEM_BYTEU	: o_unsigned_d		= 1;
+					`FUNCT3_MEM_HALF	: o_unsigned_d		= 0;
+					`FUNCT3_MEM_HALFU	: o_unsigned_d		= 1;
+					`FUNCT3_MEM_WORD	: o_unsigned_d		= 0;
+					default				: o_unsigned_d		= 0;
+				endcase
+			end
+			default				: o_unsigned_d				= 0;
 		endcase
 	end
 

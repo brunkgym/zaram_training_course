@@ -22,6 +22,7 @@ module riscv_decode
 	output					o_jump_d,
 	output					o_branch_d,
 	output					o_zero_condition,
+	output					o_unsigned_d,
 
 	input		[`XLEN-1:0]		i_instr_d,
 	input		[`XLEN-1:0]		i_pc_d,
@@ -47,6 +48,7 @@ wire	[2:0]			o_immsrc_d;
 	.o_jump_d			 (	o_jump_d		 ) ,
 	.o_branch_d			 (	o_branch_d		 ) ,
 	.o_zero_condition	 (	o_zero_condition ) ,
+	.o_unsigned_d		 (	o_unsigned_d	 ) ,
 	.i_ctrl_opcode       (	i_instr_d[6:0]   ) ,
 	.i_ctrl_funct3       (	i_instr_d[14:12] ) ,
 	.i_ctrl_funct7_5b	 (	i_instr_d[30]    )

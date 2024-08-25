@@ -27,6 +27,7 @@ module riscv_register_decode
 	output reg	 [`XLEN-1:0]   		o_register_q_16,
 	output reg						o_register_q_17,
 	output reg						o_register_q_18,
+	output reg						o_register_q_19,
 	input		[1:0]				i_register_d_0,
 	input							i_register_d_1,
 	input							i_register_d_2,
@@ -46,6 +47,7 @@ module riscv_register_decode
 	input		 [`XLEN-1:0] 		i_register_d_16,
 	input							i_register_d_17,
 	input							i_register_d_18,
+	input							i_register_d_19,
 	input						i_clk,
 	input						i_clr,
 	input						i_rstn
@@ -72,6 +74,7 @@ module riscv_register_decode
 			o_register_q_16	<= REGISTER_INIT;
 			o_register_q_17	<= REGISTER_INIT;
 			o_register_q_18	<= REGISTER_INIT;
+			o_register_q_19	<= REGISTER_INIT;
 		end else begin
 				o_register_q_0	<= i_register_d_0 ;
 				o_register_q_1	<= i_register_d_1 ;
@@ -92,6 +95,7 @@ module riscv_register_decode
 				o_register_q_16	<= i_register_d_16;
 				o_register_q_17	<= i_register_d_17;
 				o_register_q_18	<= i_register_d_18;
+				o_register_q_19	<= i_register_d_19;
 		end
 	end
 

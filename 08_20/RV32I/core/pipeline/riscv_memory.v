@@ -10,6 +10,7 @@ module riscv_memory
 	input	[`XLEN-1:0]			i_write_data_m,
 	input						i_mem_write_m,
 	input	[3:0]				i_mem_byte_sel_m,
+	input						i_unsigned_m,
 	input						i_clk
 );
 
@@ -18,8 +19,10 @@ module riscv_memory
 	.o_dmem_data     	(	o_read_data_m			),
 	.i_dmem_data     	(	i_write_data_m				),
 	.i_dmem_addr     	(	i_alu_result_m[`DMEM_ADDR_BIT-1:2]	),
+	.i_dmem_byte_addr	(	i_alu_result_m[1:0]					),
 	.i_dmem_byte_sel 	(	i_mem_byte_sel_m				),
 	.i_dmem_wr_en    	(	i_mem_write_m				),
+	.i_unsigned			(	i_unsigned_m				),
 	.i_clk				(	i_clk			)
 );
 

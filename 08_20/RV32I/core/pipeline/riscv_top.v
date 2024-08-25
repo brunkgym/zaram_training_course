@@ -74,7 +74,8 @@ wire	[4:0]			rs1_d	= o_instr_d[19:15];
 wire	[4:0]			rs2_d	= o_instr_d[24:20];
 wire	[4:0]			rd_d	= o_instr_d[11:7];
 wire	[1:0]			o_result_src_d    ;
-wire					o_alu_src_d       ;
+wire					o_alu_src_a_d       ;
+wire					o_alu_src_b_d       ;
 wire					o_reg_write_d     ;
 wire					o_mem_write_d     ;
 wire	[3:0]			o_mem_byte_sel_d  ;
@@ -86,6 +87,7 @@ wire	[`XLEN-1:0]		o_rd1_d           ;
 wire	[`XLEN-1:0]		o_rd2_d           ;
 wire	[`XLEN-1:0]		o_extimm_d        ;
 wire					o_zero_condition_d;
+wire					o_unsigned_d;
 wire	[`XLEN-1:0]		o_result_w	;	
 wire	[4:0]			o_rd_w		;	
 wire					o_reg_write_w	;
@@ -106,6 +108,7 @@ wire					o_reg_write_w	;
 	.o_rd2_d          (		o_rd2_d                           ),
 	.o_extimm_d       (		o_extimm_d                        ),
 	.o_zero_condition (		o_zero_condition_d                ),
+	.o_unsigned_d	  (		o_unsigned_d					  ),
 
 	.i_instr_d        (		o_instr_d                         ),
 	.i_pc_d           (		o_pc_d                            ),
@@ -133,6 +136,7 @@ wire	[`XLEN-1:0]		o_extimm_e      	;
 wire	[`XLEN-1:0]		o_pc_plus_4_e		;
 wire	[`XLEN-1:0]		o_pc_e				;
 wire					o_zero_condition_e	;
+wire					o_unsigned_e		;
 wire					o_flush_e			;
 wire					o_jalr_e			;
 
@@ -163,6 +167,7 @@ wire					o_jalr_e			;
 	.o_register_q_16 	(	o_pc_e							),
 	.o_register_q_17 	(	o_zero_condition_e				),
 	.o_register_q_18 	(	o_jalr_e						),
+	.o_register_q_19 	(	o_unsigned_e						),
 	.i_register_d_0  	(	o_result_src_d  				),
 	.i_register_d_1  	(	o_alu_src_a_d     				),
 	.i_register_d_2  	(	o_alu_src_b_d     				),
@@ -182,6 +187,7 @@ wire					o_jalr_e			;
 	.i_register_d_16 	(	o_pc_d							),
 	.i_register_d_17 	(	o_zero_condition_d				),
 	.i_register_d_18 	(	o_jalr_d						),
+	.i_register_d_19 	(	o_unsigned_d						),
 	.i_clk           	(	i_clk				),
 	.i_clr           	(	o_flush_e				),
 	.i_rstn				(	i_rstn							)
@@ -223,6 +229,7 @@ wire	[1:0]		o_result_src_m	;
 wire	[4:0]		o_rd_m			;	
 wire	[`XLEN-1:0]		o_pc_plus_4_m	;	
 wire	[`XLEN-1:0]		o_extimm_m;
+wire					o_unsigned_m;
 
 	riscv_register_execute
 	#(
@@ -238,6 +245,7 @@ wire	[`XLEN-1:0]		o_extimm_m;
 	.o_register_q_6 	(	o_rd_m					),
 	.o_register_q_7 	(	o_pc_plus_4_m					),
 	.o_register_q_8 	(	o_extimm_m					),
+	.o_register_q_9 	(	o_unsigned_m					),
 	.i_register_d_0 	(	o_reg_write_e					),
 	.i_register_d_1 	(	o_result_src_e					),
 	.i_register_d_2 	(	o_mem_write_e					),
@@ -247,6 +255,7 @@ wire	[`XLEN-1:0]		o_extimm_m;
 	.i_register_d_6 	(	o_rd_e					),
 	.i_register_d_7 	(	o_pc_plus_4_e					),
 	.i_register_d_8 	(	o_extimm_e					),
+	.i_register_d_9 	(	o_unsigned_e					),
 	.i_clk          	(	i_clk					),
 	.i_rstn				(	i_rstn					)
 );
@@ -259,6 +268,7 @@ wire	[`XLEN-1:0]		o_extimm_m;
 	.i_write_data_m   	(	o_write_data_m				),
 	.i_mem_write_m    	(	o_mem_write_m				),
 	.i_mem_byte_sel_m 	(	o_mem_byte_sel_m				),
+	.i_unsigned_m		(	o_unsigned_m				),
 	.i_clk				(	i_clk						)
 );
 

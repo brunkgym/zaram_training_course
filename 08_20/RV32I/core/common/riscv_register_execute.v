@@ -17,6 +17,7 @@ module riscv_register_execute
 	output reg	[`XLEN-1:0]		o_register_q_6,
 	output reg	[`XLEN-1:0]		o_register_q_7,
 	output reg	[`XLEN-1:0]		o_register_q_8,
+	output reg	[`XLEN-1:0]		o_register_q_9,
 	input		[`XLEN-1:0]		i_register_d_0,
 	input		[`XLEN-1:0]		i_register_d_1,
 	input		[`XLEN-1:0]		i_register_d_2,
@@ -26,6 +27,7 @@ module riscv_register_execute
 	input		[`XLEN-1:0]		i_register_d_6,
 	input		[`XLEN-1:0]		i_register_d_7,
 	input		[`XLEN-1:0]		i_register_d_8,
+	input		[`XLEN-1:0]		i_register_d_9,
 	input						i_clk,
 	input						i_rstn
 );
@@ -41,6 +43,7 @@ module riscv_register_execute
 			o_register_q_6	<= REGISTER_INIT;
 			o_register_q_7	<= REGISTER_INIT;
 			o_register_q_8	<= REGISTER_INIT;
+			o_register_q_9	<= REGISTER_INIT;
 		end else begin
 				o_register_q_0	<= i_register_d_0 ;
 				o_register_q_1	<= i_register_d_1 ;
@@ -51,6 +54,7 @@ module riscv_register_execute
 				o_register_q_6	<= i_register_d_6 ;
 				o_register_q_7	<= i_register_d_7 ;
 				o_register_q_8	<= i_register_d_8 ;
+				o_register_q_9	<= i_register_d_9 ;
 		end
 	end
 

@@ -11,11 +11,13 @@
 
 module riscv_dmem
 (	
-	output		[         `XLEN-1:0]	o_dmem_data,
+	output	reg	[         `XLEN-1:0]	o_dmem_data,
 	input		[         `XLEN-1:0]	i_dmem_data,
 	input		[`DMEM_ADDR_BIT-3:0]	i_dmem_addr,
+	input		[1:0]					i_dmem_byte_addr,
 	input		[       `XLEN/8-1:0]	i_dmem_byte_sel,
 	input								i_dmem_wr_en,
+	input								i_unsigned,
 	input								i_clk
 );
 
@@ -31,23 +33,38 @@ module riscv_dmem
 
 	//	Memory Read (output is not switching during write)
 	//assign		o_dmem_data = dmem_arr[i_dmem_addr];
-	wire	[`XLEN-1:0]		dmem_data_;
 
-	assign	dmem_data_	= dmem_arr[i_dmem_addr];
-	assign	o_dmem_data		= (i_dmem_byte_sel == 4'b0001) ? {{24{dmem_data_[7]}}, dmem_data_[7:0]}		:
-							  (i_dmem_byte_sel == 4'b0011) ? {{16{dmem_data_[15]}}, dmem_data_[15:0]}	:
-							  (i_dmem_byte_sel == 4'b1111) ? {						 dmem_data_[31:0]}	: 32'dx;
+	wire	[`XLEN-1:0]		dmem_data_;
+	assign	dmem_data_	= dmem_arr[i_dmem_addr] >> (8*i_dmem_byte_addr);
+
+	always @(*) begin
+		case (i_unsigned)
+			0	: case ( i_dmem_byte_sel)
+					4'b0001	: o_dmem_data		=	{{24{dmem_data_[7]}}, dmem_data_[7:0]};
+					4'b0011	: o_dmem_data		=	{{16{dmem_data_[15]}}, dmem_data_[15:0]};
+					4'b1111	: o_dmem_data		=	{						 dmem_data_[31:0]};
+					default	: o_dmem_data		=	32'dx;
+				endcase
+			1	: case ( i_dmem_byte_sel)
+					4'b0001	: o_dmem_data		=	{{24{                         1'b0}},	dmem_data_[ 7:0]};
+					4'b0011	: o_dmem_data		=	{{16{                         1'b0}},	dmem_data_[15:0]};
+					default	: o_dmem_data		=	32'dx;
+				endcase
+		endcase
+	end
+
 
 	//	Memory Write (to support sb, sh, sw)
 	//		- i_dmem_byte_sel = sb: 4'b0001, sh: 4'b0011, sw: 4'b1111
+
 	integer		i;
 	always @(posedge i_clk) begin
 		if (i_dmem_wr_en) begin
-			for (i=0; i<`XLEN/8; i++) begin
-				if (i_dmem_byte_sel[i]) begin
-					dmem_arr[i_dmem_addr][8*i+:8] <= i_dmem_data[8*i+:8];
-				end
-			end
+			case (i_dmem_byte_sel)
+				4'b0001	:	dmem_arr[i_dmem_addr][i_dmem_byte_addr*8+:8] <= i_dmem_data[7:0];
+				4'b0011	:	dmem_arr[i_dmem_addr][i_dmem_byte_addr[1]*16+:16] <= i_dmem_data[15:0];
+				default	:	dmem_arr[i_dmem_addr] <= i_dmem_data;
+			endcase
 		end else begin
 			dmem_arr[i_dmem_addr] <= dmem_arr[i_dmem_addr];
 		end
