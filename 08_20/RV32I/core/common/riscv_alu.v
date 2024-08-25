@@ -12,12 +12,14 @@
 module riscv_alu
 (	
 	output reg	[`XLEN-1:0]		o_alu_result,
-	output						o_alu_zero,
+	output						o_zero_e,
 	input		[`XLEN-1:0]		i_alu_a,
 	input		[`XLEN-1:0]		i_alu_b,
 	input		[      3:0]		i_alu_ctrl,
 	input						i_zero_condition
 );
+
+wire	alu_zero;
 
 	always @(*) begin
 		case (i_alu_ctrl)
@@ -35,8 +37,12 @@ module riscv_alu
 		endcase
 	end
 
-	assign	o_alu_zero	= (i_zero_condition == 0 && o_alu_result == 0) ? 1'b1 :
+	/*
+	assign	alu_zero	= (i_zero_condition == 0 && o_alu_result == 0) ? 1'b1 :
 						  (i_zero_condition == 1 && o_alu_result != 0) ? 1'b1 : 1'b0;
+					  */
+	assign	alu_zero	= (o_alu_result ==0) ? 1'b1 : 0;
+	assign	o_zero_e	= (i_zero_condition) ? !alu_zero : alu_zero;
 
 `ifdef	DEBUG
 	reg			[8*8-1:0]		DEBUG_ALU_OP;

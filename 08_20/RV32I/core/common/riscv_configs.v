@@ -72,13 +72,13 @@
 `define	SRC_RD_ALU   		2'b00
 `define	SRC_RD_DME   		2'b01
 `define	SRC_RD_PC4			2'b10
-//`define	SRC_RD_IMM			2'b11
+`define	SRC_RD_IMM			2'b11
 
 // --------------------------------------------------
 // source alu
 // --------------------------------------------------
-//`define	SRC_ALU_A_RS1   	1'b0
-//`define	SRC_ALU_A_PC   		1'b1
+`define	SRC_ALU_A_RS1   	1'b0
+`define	SRC_ALU_A_PC   		1'b1
 `define	SRC_ALU_B_RS2		1'b0
 `define	SRC_ALU_B_IMM		1'b1
 

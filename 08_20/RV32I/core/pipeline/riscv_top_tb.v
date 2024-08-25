@@ -38,6 +38,13 @@ module riscv_top_tb;
 // --------------------------------------------------
 //	DUT Signals & Instantiate
 // --------------------------------------------------
+	wire	[`XLEN-1:0]		o_im_rd_f        ;
+	wire	[`XLEN-1:0] 	o_pc_f           ;
+	wire	[`XLEN-1:0]		o_alu_result_m   ;
+	wire					o_mem_write_m    ;
+	wire	[3:0]			o_mem_byte_sel_m ;
+	wire	[`XLEN-1:0]		o_write_data_m   ;
+	wire	[`XLEN-1:0]		o_read_data_m    ;
 
 	reg							i_clk;
 	reg							i_rstn;
@@ -47,8 +54,16 @@ module riscv_top_tb;
 		.REGISTER_INIT			(0)
 	)
 	u_riscv_top(
-		.i_clk			(	i_clk			),
-		.i_rstn			(	i_rstn			)
+		.o_im_rd_f       	(	o_im_rd_f       		),
+        .o_pc_f          	(	o_pc_f          		),
+        .o_alu_result_m  	(	o_alu_result_m  		),
+        .o_mem_write_m   	(	o_mem_write_m   		),
+        .o_mem_byte_sel_m	(	o_mem_byte_sel_m		),
+        .o_write_data_m  	(	o_write_data_m  		),
+        .o_read_data_m   	(	o_read_data_m   		),
+
+		.i_clk				(	i_clk			),
+		.i_rstn				(	i_rstn			)
 	);
 	
 

@@ -14,12 +14,14 @@ module riscv_register_memory
 	output reg	[`XLEN-1:0]		o_register_q_3,
 	output reg	[`XLEN-1:0]		o_register_q_4,
 	output reg	[`XLEN-1:0]		o_register_q_5,
+	output reg	[`XLEN-1:0]		o_register_q_6,
 	input		[`XLEN-1:0]		i_register_d_0,
 	input		[`XLEN-1:0]		i_register_d_1,
 	input		[`XLEN-1:0]		i_register_d_2,
 	input		[`XLEN-1:0]		i_register_d_3,
 	input		[`XLEN-1:0]		i_register_d_4,
 	input		[`XLEN-1:0]		i_register_d_5,
+	input		[`XLEN-1:0]		i_register_d_6,
 	input						i_clk,
 	input						i_rstn
 );
@@ -32,6 +34,7 @@ module riscv_register_memory
 			o_register_q_3	<= REGISTER_INIT;
 			o_register_q_4	<= REGISTER_INIT;
 			o_register_q_5	<= REGISTER_INIT;
+			o_register_q_6	<= REGISTER_INIT;
 		end else begin
 				o_register_q_0	<= i_register_d_0 ;
 				o_register_q_1	<= i_register_d_1 ;
@@ -39,6 +42,7 @@ module riscv_register_memory
 				o_register_q_3	<= i_register_d_3 ;
 				o_register_q_4	<= i_register_d_4 ;
 				o_register_q_5	<= i_register_d_5 ;
+				o_register_q_6	<= i_register_d_6 ;
 		end
 	end
 

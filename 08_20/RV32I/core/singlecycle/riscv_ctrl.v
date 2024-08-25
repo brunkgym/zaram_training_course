@@ -14,16 +14,17 @@ module riscv_ctrl
 	//output reg	[1:0]			o_ctrl_src_pc,
 	output reg	[2:0]			o_ctrl_src_imm,
 	output reg	[1:0]			o_ctrl_src_rd,
+	output reg					o_ctrl_src_alu_a,
 	output reg					o_ctrl_src_alu_b,
 	output reg					o_ctrl_reg_wr_en,
 	output reg					o_ctrl_mem_wr_en,
 	output reg	[3:0]			o_ctrl_mem_byte_sel,
 	output reg	[3:0]			o_ctrl_alu_ctrl,
+	output reg					o_jalr_d,
 	output reg					o_jump_d,
 	output reg					o_branch_d,
-	output reg					o_aui,
-	output reg					o_lui,
 	output reg					o_zero_condition,
+	
 	//input						i_ctrl_alu_zero,
 	input		[6:0]			i_ctrl_opcode,
 	input		[2:0]			i_ctrl_funct3,
@@ -31,7 +32,15 @@ module riscv_ctrl
 );
 
 	always @(*) begin
-		if (i_ctrl_opcode == `OPCODE_J_JAL) begin
+		if (i_ctrl_opcode == `OPCODE_I_JALR) begin
+			o_jalr_d	= 1'b1;
+		end else begin
+			o_jalr_d	= 1'b0;
+		end
+	end
+
+	always @(*) begin
+		if (i_ctrl_opcode == `OPCODE_J_JAL ) begin
 			o_jump_d	= 1'b1;
 		end else begin
 			o_jump_d	= 1'b0;
@@ -73,19 +82,6 @@ module riscv_ctrl
 	end
 	*/
 
-   always @(*) begin
-	   case (i_ctrl_opcode)
-		   `OPCODE_U_LUI	: o_lui	= 1;
-		   default			: o_lui = 0;
-	   endcase
-   end
-
-   always @(*) begin
-	   case (i_ctrl_opcode)
-		   `OPCODE_U_AUIPC	: o_aui = 1;
-		   default			: o_aui = 0;
-	   endcase
-   end
 
 	always @(*) begin
 		case (i_ctrl_opcode)
@@ -107,25 +103,26 @@ module riscv_ctrl
 			`OPCODE_I_LOAD		: o_ctrl_src_rd		= `SRC_RD_DME;
 			`OPCODE_J_JAL		,
 			`OPCODE_I_JALR		: o_ctrl_src_rd		= `SRC_RD_PC4;
-			//`OPCODE_U_LUI		: o_ctrl_src_rd		= `SRC_RD_IMM;
+			`OPCODE_U_LUI		: o_ctrl_src_rd		= `SRC_RD_IMM;
 			default				: o_ctrl_src_rd		= `SRC_RD_ALU;
 		endcase
 	end
-/*
+
 	always @(*) begin
 		case (i_ctrl_opcode)
 			`OPCODE_U_AUIPC		: o_ctrl_src_alu_a	= `SRC_ALU_A_PC;
 			default				: o_ctrl_src_alu_a	= `SRC_ALU_A_RS1;
 		endcase
 	end
-	*/
 
 	always @(*) begin
 		case (i_ctrl_opcode)
 			`OPCODE_I_OP		,
 			`OPCODE_I_LOAD		,
 			`OPCODE_S_STORE		,
+			`OPCODE_J_JAL		: o_ctrl_src_alu_b	= `SRC_ALU_B_IMM;
 			`OPCODE_I_JALR		: o_ctrl_src_alu_b	= `SRC_ALU_B_IMM;
+			`OPCODE_U_AUIPC		: o_ctrl_src_alu_b	= `SRC_ALU_B_IMM;
 			default				: o_ctrl_src_alu_b	= `SRC_ALU_B_RS2;
 		endcase
 	end

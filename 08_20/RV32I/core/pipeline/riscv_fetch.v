@@ -16,7 +16,7 @@ module riscv_fetch
 	riscv_imem
 	u_riscv_imem(
 		.o_imem_data	(o_im_rd_f		),
-		.i_imem_addr	(i_pc_f				)
+		.i_imem_addr	(i_pc_f[`IMEM_ADDR_BIT-1:2]		)
 	);
 
 	riscv_adder

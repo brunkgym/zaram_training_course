@@ -25,7 +25,7 @@ module riscv_register
 		if(!i_rstn) begin
 			o_register_q	<= REGISTER_INIT;
 		end else begin
-			if(i_register_en) begin
+			if(!i_register_en) begin
 				o_register_q	<= i_register_d;
 			end else begin
 				o_register_q	<= o_register_q;

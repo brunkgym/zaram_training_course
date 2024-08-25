@@ -26,7 +26,7 @@ module riscv_register_fetch
 			o_register_q_1	<= REGISTER_INIT;
 			o_register_q_2	<= REGISTER_INIT;
 		end else begin
-			if(i_register_en) begin
+			if(!i_register_en) begin
 				o_register_q_0	<= i_register_d_0;
 				o_register_q_1	<= i_register_d_1;
 				o_register_q_2	<= i_register_d_2;

@@ -30,7 +30,13 @@ module riscv_dmem
 `endif
 
 	//	Memory Read (output is not switching during write)
-	assign		o_dmem_data = dmem_arr[i_dmem_addr];
+	//assign		o_dmem_data = dmem_arr[i_dmem_addr];
+	wire	[`XLEN-1:0]		dmem_data_;
+
+	assign	dmem_data_	= dmem_arr[i_dmem_addr];
+	assign	o_dmem_data		= (i_dmem_byte_sel == 4'b0001) ? {{24{dmem_data_[7]}}, dmem_data_[7:0]}		:
+							  (i_dmem_byte_sel == 4'b0011) ? {{16{dmem_data_[15]}}, dmem_data_[15:0]}	:
+							  (i_dmem_byte_sel == 4'b1111) ? {						 dmem_data_[31:0]}	: 32'dx;
 
 	//	Memory Write (to support sb, sh, sw)
 	//		- i_dmem_byte_sel = sb: 4'b0001, sh: 4'b0011, sw: 4'b1111
